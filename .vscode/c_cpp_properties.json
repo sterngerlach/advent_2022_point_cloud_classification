@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/hls/src/**",
+                "/tools/Xilinx/Vitis_HLS/2022.1/include/**",
+                "/usr/include/hdf5/serial/**",
+                "${env:HOME}/libtorch-1.12.1/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
