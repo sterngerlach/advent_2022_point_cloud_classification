@@ -10,12 +10,16 @@
 import h5py
 import numpy as np
 import os
+import sys
 import torch.utils.data
 import torchvision
 
 from typing import List
 
-import modelnet_transforms
+sys.path.insert(0, os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir)))
+
+from net import modelnet_transforms
 
 def load_modelnet_category(file_name: str):
     # Check if the category file exists
