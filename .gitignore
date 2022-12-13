@@ -1,6 +1,12 @@
 
 # .gitignore
 
+hls/build
+hls/work
+vivado/bitstream
+vivado/build
+vivado/work
+
 # ModelNet40 dataset
 data/modelnet40_ply_hdf5_2048
 data/modelnet40_ply_hdf5_2048.zip
