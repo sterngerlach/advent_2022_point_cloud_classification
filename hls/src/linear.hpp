@@ -122,7 +122,7 @@ void LinearOpt1(const T x[InDims],
   for (int i0 = 0; i0 < OutDims; i0 += B) {
 #pragma HLS PIPELINE off
     T vals[B];
-#pragma HLS ARRAY_PARTITION variable=vals dim=1 complete
+#pragma HLS ARRAY_PARTITION variable=vals type=complete dim=1
 
     for (int j = 0; j < InDims; ++j) {
 #pragma HLS PIPELINE
@@ -135,7 +135,6 @@ void LinearOpt1(const T x[InDims],
     }
 
     for (int i1 = 0; i1 < B; ++i1) {
-#pragma HLS PIPELINE
 #pragma HLS UNROLL
       int i = i0 + i1;
       if (ApplyReLU)
@@ -189,9 +188,9 @@ void LinearOpt1DDR(const T x[InDims],
   for (int i0 = 0; i0 < OutDims; i0 += B) {
 #pragma HLS PIPELINE off
     T vals[B];
-#pragma HLS ARRAY_PARTITION variable=vals dim=1 complete
+#pragma HLS ARRAY_PARTITION variable=vals type=complete dim=1
     TParam weight[B][InDims];
-#pragma HLS ARRAY_PARTITION variable=weight dim=1 complete
+#pragma HLS ARRAY_PARTITION variable=weight type=cyclic factor=BHalf dim=1
 
     // Copy the weight parameters for `B` outputs
     const int offset0 = offset + i0 * InDims;
@@ -215,7 +214,6 @@ void LinearOpt1DDR(const T x[InDims],
     }
 
     for (int i1 = 0; i1 < B; ++i1) {
-#pragma HLS PIPELINE
 #pragma HLS UNROLL
       int i = i0 + i1;
       if (i < OutDims) {
