@@ -64,7 +64,8 @@ def test(args: argparse.Namespace,
     print(f"Test result: " \
           f"loss: {test_loss_avg:.6f}, " \
           f"accuracy: {test_acc:.3f}%, " \
-          f"correct: {correct}")
+          f"correct: {correct}, " \
+          f"total: {len(test_loader.dataset)}")
 
 def main():
     # Parse the command-line arguments
