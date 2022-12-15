@@ -156,5 +156,14 @@ endfunction()
 vivado_add_targets(pointnet_naive PointNetClsTop
   runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_naive.tcl)
 
-vivado_add_targets(pointnet_naive_250 PointNetClsTop
-  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_naive_250.tcl)
+vivado_add_targets(pointnet_naive_150 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_naive_150.tcl)
+
+vivado_add_targets(pointnet_opt1 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_naive_150.tcl)
+
+vivado_add_targets(pointnet_opt2 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_naive_150.tcl)
+
+vivado_add_targets(pointnet_opt3 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
