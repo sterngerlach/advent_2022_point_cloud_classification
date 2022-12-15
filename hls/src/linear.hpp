@@ -226,4 +226,100 @@ void LinearOpt1DDR(const T x[InDims],
   }
 }
 
+// Parallel implementation of the fully-connected layer
+// Weight and bias parameters are stored on the DDR memory
+// Matrix-vector multiplication is parallelized along the output dimension
+// `T` is the type for values
+// `TParam` is the type for weight and bias
+// `InDims` is the number of input dimensions
+// `OutDims` is the number of output dimensions
+// `ApplyReLU` is the flag to apply ReLU activation
+// `B` is the block size for the output dimension
+template <typename T, typename TParam,
+          int InDims, int OutDims, bool ApplyReLU, int B>
+void LinearOpt2DDR(const T x[InDims],
+                   T y[OutDims],
+                   const ap_uint<64>* params,
+                   const int offset)
+{
+  // `x` is of size (1, `InDims`)
+  // `y` is of size (1, `OutDims`)
+  // `params` contains weight parameters of size (`OutDims`, `InDims`) and
+  // bias parameters of size (`OutDims`) in a contiguous buffer
+
+#pragma HLS INLINE off
+
+  // `OutDims` must be a multiple of `B`
+  static_assert(OutDims % B == 0, "`OutDims` must be a multiple of `B`");
+  // `B` must be larger than 1
+  static_assert(B > 1, "`B` must be larger than 1");
+  // `InDims` must be a multiple of 2
+  static_assert(InDims % 2 == 0, "`InDims` must be a multiple of 2");
+  // `OutDims` must be a multiple of 2
+  static_assert(OutDims % 2 == 0, "`OutDims` must be a multiple of 2");
+  // `offset` must be a multiple of 2
+  assert(offset % 2 == 0);
+
+  constexpr const int BHalf = B / 2;
+  constexpr const int OffsetToBias = OutDims * InDims / 2;
+  constexpr const int InDims2 = InDims / 2;
+  constexpr const int OutDims2 = OutDims / 2;
+  const int offset2 = offset / 2;
+
+  TParam bias[OutDims];
+#pragma HLS ARRAY_PARTITION variable=bias type=cyclic factor=BHalf dim=1
+
+  // Copy the bias parameters in advance
+  for (int i = 0; i < OutDims2; ++i) {
+#pragma HLS PIPELINE II=1
+    const ap_uint<64> bias_data = params[offset2 + OffsetToBias + i];
+    bias[i * 2 + 0] = TParam(U32ToFloat(bias_data.range(31, 0)));
+    bias[i * 2 + 1] = TParam(U32ToFloat(bias_data.range(63, 32)));
+  }
+
+  for (int i0 = 0; i0 < OutDims; i0 += B) {
+#pragma HLS PIPELINE off
+    T vals[B];
+#pragma HLS ARRAY_PARTITION variable=vals type=complete dim=1
+    TParam weight[B][InDims];
+#pragma HLS ARRAY_PARTITION variable=weight type=cyclic factor=BHalf dim=1
+
+    // Copy the weight parameters for `B` outputs
+    const int offset0 = offset2 + i0 * InDims2;
+    for (int i1 = 0; i1 < B; ++i1) {
+      for (int j = 0; j < InDims2; ++j) {
+#pragma HLS PIPELINE
+        const ap_uint<64> weight_data = params[offset0 + i1 * InDims2 + j];
+        weight[i1][j * 2 + 0] = TParam(
+          U32ToFloat(weight_data.range(31, 0)));
+        weight[i1][j * 2 + 1] = TParam(
+          U32ToFloat(weight_data.range(63, 32)));
+      }
+    }
+
+    for (int j = 0; j < InDims; ++j) {
+#pragma HLS PIPELINE
+      for (int i1 = 0; i1 < B; ++i1) {
+#pragma HLS UNROLL
+        int i = i0 + i1;
+        if (i < OutDims) {
+          T last = (j == 0) ? T(bias[i]) : vals[i1];
+          vals[i1] = last + x[j] * weight[i1][j];
+        }
+      }
+    }
+
+    for (int i1 = 0; i1 < B; ++i1) {
+#pragma HLS UNROLL
+      int i = i0 + i1;
+      if (i < OutDims) {
+        if (ApplyReLU)
+          y[i] = vals[i1] > T(0) ? vals[i1] : T(0);
+        else
+          y[i] = vals[i1];
+      }
+    }
+  }
+}
+
 #endif // LINEAR_HPP
