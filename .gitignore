@@ -3,7 +3,6 @@
 
 hls/build
 hls/work
-vivado/bitstream
 vivado/build
 vivado/work
 
