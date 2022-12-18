@@ -205,13 +205,13 @@ hls_add_targets(pointnet_naive_150 PointNetClsTop
     "-DPARAM_BIT_WIDTH=32 -DPARAM_INT_WIDTH=16")
 
 hls_add_targets(pointnet_naive_200 PointNetClsTop
-  CLOCK_PERIOD 6.66
+  CLOCK_PERIOD 5.0
   HLS_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/top_naive.cpp
   CXXFLAGS "-DVALUE_BIT_WIDTH=32 -DVALUE_INT_WIDTH=16 "
     "-DPARAM_BIT_WIDTH=32 -DPARAM_INT_WIDTH=16")
 
 hls_add_targets(pointnet_naive_250 PointNetClsTop
-  CLOCK_PERIOD 6.66
+  CLOCK_PERIOD 4.0
   HLS_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/top_naive.cpp
   CXXFLAGS "-DVALUE_BIT_WIDTH=32 -DVALUE_INT_WIDTH=16 "
     "-DPARAM_BIT_WIDTH=32 -DPARAM_INT_WIDTH=16")
