@@ -173,3 +173,24 @@ vivado_add_targets(pointnet_opt2 PointNetClsTop
 
 vivado_add_targets(pointnet_opt3 PointNetClsTop
   runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_28_28 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_28_24 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_24_24 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_24_20 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_24_16 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_20_20 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
+
+vivado_add_targets(pointnet_opt3_20_16 PointNetClsTop
+  runtime_optimized ${PROJECT_SOURCE_DIR}/tcl/board_design_opt3_150.tcl)
