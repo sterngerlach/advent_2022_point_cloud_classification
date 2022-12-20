@@ -38,8 +38,8 @@ template <typename T, typename U>
 void InferenceClsNaive(const T feature[kFeatDims5],
                        float* out_logits,
                        const LinearParams<U, kClsDims2, kClsDims3>* fc3,
-                       const BatchNorm1dParams<T, kClsDims1>* bn1,
-                       const BatchNorm1dParams<T, kClsDims2>* bn2,
+                       const BatchNorm1dParams<U, kClsDims1>* bn1,
+                       const BatchNorm1dParams<U, kClsDims2>* bn2,
                        const float* params1,
                        const float* params2,
                        const float* params3)

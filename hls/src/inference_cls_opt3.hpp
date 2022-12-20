@@ -38,8 +38,8 @@ template <typename T, typename U>
 void InferenceClsOpt3(const T feature[kFeatDims5],
                       ap_uint<64>* out_logits,
                       const LinearParams<U, kClsDims2, kClsDims3>* fc3,
-                      const BatchNorm1dParams<T, kClsDims1>* bn1,
-                      const BatchNorm1dParams<T, kClsDims2>* bn2,
+                      const BatchNorm1dParams<U, kClsDims1>* bn1,
+                      const BatchNorm1dParams<U, kClsDims2>* bn2,
                       const ap_uint<64>* params1,
                       const ap_uint<64>* params2,
                       const ap_uint<64>* params3)
